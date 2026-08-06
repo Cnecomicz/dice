@@ -17,7 +17,7 @@ class Dice:
         per_level: Indicate whether the amount of dice to roll scales
             multiplicatively with the character's level. Default False.
     """
-    
+
     sides: int
     quantity: int = 1
     keep: int | None = None
@@ -25,3 +25,22 @@ class Dice:
     multiplier: int = 1
     per_level: bool = False
 
+    def __post_init__(self) -> None:
+        if self.quantity < 1:
+            raise ValueError(
+                f"Quantity is {self.quantity} but must be at least 1."
+            )
+        if self.sides < 1:
+            raise ValueError(
+                f"Sides is {self.sides} but must be at least 1."
+            )
+        if (
+            self.keep is not None 
+            and (self.keep < 1 or self.keep > self.quantity)
+        ):
+            raise ValueError(
+                f"Keep is {self.keep} but must be at least 1 and at most "
+                f"{self.quantity=}."
+            )
+        if self.multiplier == 0:
+            raise ValueError("Multiplier cannot be 0.")
