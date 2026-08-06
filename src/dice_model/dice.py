@@ -47,6 +47,22 @@ class Dice:
         if self.multiplier == 0:
             raise ValueError("Multiplier cannot be 0.")
 
+    def to_string(self) -> str:
+        """Return the dice syntax string notation for this Dice.
+
+        Returns:
+            str: A formatted dice syntax string.
+        """
+        dice_syntax = ""
+        dice_syntax += "l*" if self.per_level else ""
+        dice_syntax += f"{self.quantity}" if self.quantity > 1 else ""
+        dice_syntax += f"d{self.sides}"
+        dice_syntax += f"k{self.keep}" if self.keep is not None else ""
+        dice_syntax += f"*{self.multiplier}" if self.multiplier != 1 else ""
+        dice_syntax += f"{self.summand:+d}" if self.summand != 0 else ""
+        return dice_syntax
+
+
 def parse(dice_syntax: str) -> Dice:
     """Build a Dice from its string notation.
 
