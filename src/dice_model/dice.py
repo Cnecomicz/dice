@@ -5,8 +5,10 @@ class Dice:
     """A set of same-sided dice to roll, with potential modifiers.
 
     Attributes:
-        sides: How many sides each die has. Must be at least 1.
         quantity: How many dice to roll. Must be at least 1. Default 1.
+        sides: How many sides each die has. Must be at least 1. Default 
+            0, because we want the attr order to match dice string syntax
+            but also want require the caller to provide a number of sides.
         keep: How many of the highest rolls to keep. Must be between 1 and
             quantity, inclusive. Default None (a sentinel meaning to keep
             all rolled dice).
@@ -18,8 +20,8 @@ class Dice:
             multiplicatively with the character's level. Default False.
     """
 
-    sides: int
     quantity: int = 1
+    sides: int = 0
     keep: int | None = None
     summand: int = 0
     multiplier: int = 1
