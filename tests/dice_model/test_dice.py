@@ -5,5 +5,5 @@ from dice_model.dice import Dice
 def test_dice_creation():
     extreme_character_creation = Dice(quantity=3, sides=20, keep=1)
     cleric_spells_gained = Dice(sides=4, summand=2)
-    starting_gold = Dice(quantity=3, sides=6, multipler=10)
+    starting_gold = Dice(quantity=3, sides=6, multiplier=10)
     elemental_blast_spell_damage = Dice(sides=6, per_level=True)
