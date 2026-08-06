@@ -32,3 +32,13 @@ def test_parsing_dice_string_syntax():
     assert parse("3d6*10") == Dice(quantity=3, sides=6, multiplier=10)
     assert parse("l*d6") == Dice(sides=6, per_level=True)
     assert parse("l*2d6k1*3+2") == Dice(quantity=2, sides=6, keep=1, multiplier=3, summand=2, per_level=True)
+
+# A Dice can return its own string syntax
+def test_generating_dice_string_syntax():
+    assert Dice(sides=20).to_string() == "d20"
+    assert Dice(quantity=3, sides=6).to_string() == "3d6"
+    assert Dice(quantity=3, sides=20, keep=1).to_string() == "3d20k1"
+    assert Dice(sides=4, summand=2).to_string() == "d4+2"
+    assert Dice(quantity=3, sides=6, multiplier=10).to_string() == "3d6*10"
+    assert Dice(sides=6, per_level=True).to_string() == "l*d6"
+    assert Dice(quantity=2, sides=6, keep=1, multiplier=3, summand=2, per_level=True).to_string() == "l*2d6k1*3+2"
