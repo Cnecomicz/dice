@@ -1,6 +1,6 @@
 from pytest import raises
 
-from dice_model.dice import Dice
+from dice_model.dice import Dice, parse
 
 # Dice can be created. NB: I'm creating examples straight from the TTRPG
 # which demonstrate the need for these attrs
