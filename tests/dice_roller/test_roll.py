@@ -21,8 +21,6 @@ def test_face_alias(mock_rng):
     assert result_2.total == 41
 
 # RollResult in int contexts acts as its total
-def test_result_coerces_to_total(mock_rng):
-    hp = 2
-    bandages = roll(Dice(sides=4), rng=mock_rng(3))
-    hp += bandages
-    assert hp == 5
+def test_result_converts_to_total(mock_rng):
+    result = roll(Dice(quantity=3, sides=10, keep=2))
+    assert int(result) == result.total

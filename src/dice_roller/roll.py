@@ -22,6 +22,9 @@ class RollResult:
     kept: tuple[int, ...]
     total: int
 
+    def __int__(self) -> int:
+        return self.total
+
     @property
     def face(self) -> int:
         """If only one die is rolled, this is the face it rolled.
@@ -36,7 +39,7 @@ class RollResult:
             )
         return self.faces[0]
 
-def roll(dice: Dice, level: int = 1, rng: Rng | None = None) -> int:
+def roll(dice: Dice, level: int = 1, rng: Rng | None = None) -> RollResult:
     """Roll the set of dice and return the result.
 
     Args:
