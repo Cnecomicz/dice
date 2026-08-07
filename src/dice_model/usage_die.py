@@ -85,7 +85,7 @@ class UsageDie:
         which may exhaust it. Any other roll leaves the die where it is.
 
         Args:
-            rng (Rng): The randomness source. Defaults to the default_rng().
+            rng (Rng): The randomness source. Defaults to default_rng().
 
         Returns:
             A UsageResult recording what happened on this use.

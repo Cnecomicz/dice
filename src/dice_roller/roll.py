@@ -45,7 +45,7 @@ def roll(dice: Dice, level: int = 1, rng: Rng | None = None) -> RollResult:
     Args:
         dice (Dice): The description of what to roll.
         level (int): The character level, relevant if dice.per_level == True.
-        rng (Rng): The randomness source. Defaults to the default_rng().
+        rng (Rng): The randomness source. Defaults to default_rng().
 
     Returns:
         int: The resulting roll.
@@ -56,7 +56,7 @@ def roll(dice: Dice, level: int = 1, rng: Rng | None = None) -> RollResult:
     if dice.keep is None:
         kept = all_rolls
     else:
-        kept = sorted(all_rolls, reverse=True)[: dice.keep]
+        kept = tuple(sorted(all_rolls, reverse=True)[: dice.keep])
     total = sum(kept) * dice.multiplier + dice.summand
     return RollResult(
         dice=dice, faces=all_rolls, kept=kept, total=total
