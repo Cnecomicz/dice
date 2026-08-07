@@ -93,7 +93,7 @@ class UsageDie:
         if self.exhausted:
             raise ValueError("Cannot use an exhausted usage die.")
         sides_before = self.chain[self.position]
-        face = roll(dice=Dice(sides=sides_before), rng=rng)
+        face = roll(dice=Dice(sides=sides_before), rng=rng).face
         downgraded = face in DOWNGRADE_ON
         if downgraded:
             self.position += 1
