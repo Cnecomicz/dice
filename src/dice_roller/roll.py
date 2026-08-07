@@ -1,6 +1,9 @@
 from dice_model.dice import Dice
 from dice_roller.rng import default_rng, Rng
 
+class RollResult:
+    pass
+
 def roll(dice: Dice, level: int = 1, rng: Rng | None = None) -> int:
     """Roll the set of dice and return the result.
 
