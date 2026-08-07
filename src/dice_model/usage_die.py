@@ -2,6 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from dice_model.dice import Dice
+from dice_roller.rng import Rng
 from dice_roller.roll import roll
 
 DOWNGRADE_ON = {1, 2}
@@ -35,17 +36,22 @@ class UsageDie:
         """Whether the resource has been used up."""
         return self.position >= len(self.chain)
 
-    def use(self) -> UsageResult:
+    def use(self, rng: Rng | None = None) -> UsageResult:
         """Spend the resource; roll the current die and possibly downgrade.
 
         A roll of 1 or 2 downgrades the usage die one step along its chain,
         which may exhaust it. Any other roll leaves the die where it is.
 
+        Args:
+            rng (Rng): The randomness source. Defaults to the default_rng().
+
         Returns:
             A UsageResult recording what happened on this use.
         """
+        if self.exhausted:
+            raise ValueError("Cannot use an exhausted usage die.")
         sides_before = self.chain[self.position]
-        face = roll(Dice(sides=sides_before))
+        face = roll(dice=Dice(sides=sides_before), rng=rng)
         downgraded = face in DOWNGRADE_ON
         if downgraded:
             self.position += 1
