@@ -84,3 +84,6 @@ class UsageResult:
     sides_after: int | None
     downgraded: bool
     exhausted: bool
+
+def parse(dice_syntax: str) -> UsageDie:
+    pass
