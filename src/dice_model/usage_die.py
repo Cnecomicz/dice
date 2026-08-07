@@ -1,11 +1,14 @@
 from __future__ import annotations
 from dataclasses import dataclass
+from re import compile, IGNORECASE, VERBOSE
 
 from dice_model.dice import Dice
 from dice_roller.rng import Rng
 from dice_roller.roll import roll
 
 DOWNGRADE_ON = {1, 2}
+REGULAR_LADDER = (20, 12, 10, 8, 6, 4)
+ZOCCHI_LADDER = (20, 16, 14, 12, 10, 8, 7, 6, 5, 4)
 
 class UsageDie:
     """A usage die that wears down as its resource is spent.
@@ -35,6 +38,45 @@ class UsageDie:
     def exhausted(self) -> bool:
         """Whether the resource has been used up."""
         return self.position >= len(self.chain)
+
+    def to_string(self) -> str:
+        """Return the dice syntax string notation for this UsageDie.
+
+        Dice syntax is determined by matching the chain to either the regular
+        or the Zocchi ladders. A valid chain begins at some point in the
+        ladder (not necessarily the start) and follows it exactly to the
+        end of the ladder. It then has 0 or more full copies of the ladder,
+        indicating a prestiged UsageDie. 
+
+        Returns:
+            str: A formatted dice syntax string.
+
+        Raises:
+            ValueError: If the chain does not follow the regular or Zocchi
+                ladder and thus has no canonical shorthand.
+        """
+        for ladder in (REGULAR_LADDER, ZOCCHI_LADDER):
+            try:
+                start = ladder.index(self.chain[0])
+            except ValueError:
+                continue
+            suffix = ladder[start:]
+            if self.chain[:len(suffix)] != suffix:
+                continue
+            tail = self.chain[len(suffix):]
+            if len(tail) % len(ladder) != 0:
+                continue
+            prestige = len(tail) // len(ladder)
+            if tail != ladder * prestige:
+                continue
+            dice_syntax = ""
+            dice_syntax += "u" if ladder == REGULAR_LADDER else "z"
+            dice_syntax += str(self.chain[0])
+            dice_syntax += f"p{prestige}" if prestige > 0 else ""
+            return dice_syntax
+        raise ValueError(
+            f"Chain {self.chain} does not conform to a canonical dice syntax."
+        )
 
     def use(self, rng: Rng | None = None) -> UsageResult:
         """Spend the resource; roll the current die and possibly downgrade.
@@ -86,4 +128,53 @@ class UsageResult:
     exhausted: bool
 
 def parse(dice_syntax: str) -> UsageDie:
-    pass
+    """Build a UsageDie from its string notation.
+
+    Supported formats:
+    - "uS": Non-Zocchi UsageDie with S sides. 
+        Example: "u6" ↦ UsageDie(6, 4)
+    - "zS": Zocchi UsageDie with S sides. 
+        Example: "z6" ↦ UsageDie(6, 5, 4)
+    - "uSpP": Non-Zocchi UsageDie with S sides and P prestige.
+        Example: "u6p1" ↦ UsageDie(6, 4, 20, 12, 10, 8, 6, 4)
+    - "zSpP": Zocchi UsageDie with S sides and P prestige.
+        Example: "z6p1" ↦ UsageDie(6, 5, 4, 20, 16, 14, 12, 10, 8, 7, 6, 5, 4)
+
+    Args:
+        dice_syntax (str): A valid dice syntax string.
+
+    Returns:
+        UsageDie: The described UsageDie object.
+
+    Raises:
+        ValueError: If dice_syntax is not valid dice syntax.
+    """
+    notation = compile(
+        r"""
+        ^
+        (?P<zocchi>[uz])
+        (?P<sides>\d+)
+        (?:p(?P<prestige>\d+))?
+        $
+        """,
+        IGNORECASE | VERBOSE
+    )
+    match = notation.fullmatch(dice_syntax)
+    if match is None:
+        raise ValueError(f"Invalid dice syntax: {dice_syntax!r}.")
+    attrs = match.groupdict()
+    ladder = (
+        ZOCCHI_LADDER if attrs["zocchi"].lower() == "z" else REGULAR_LADDER
+    )
+    sides = int(attrs["sides"])
+    if sides not in ladder:
+        raise ValueError(
+            f"A {'Zocchi' if ladder is ZOCCHI_LADDER else 'regular'} usage "
+            "die must start on one of "
+            f"{', '.join(str(side) for side in ladder)}, but {sides} was "
+            "provided instead."
+        )
+    prestige = int(attrs["prestige"]) if attrs["prestige"] else 0
+    start = ladder.index(sides)
+    chain = ladder[start:] + ladder*prestige
+    return UsageDie(*chain)
