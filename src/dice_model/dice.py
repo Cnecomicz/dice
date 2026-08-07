@@ -6,17 +6,18 @@ class Dice:
     """A set of same-sided dice to roll, with potential modifiers.
 
     Attributes:
-        quantity: How many dice to roll. Must be at least 1. Default 1.
-        sides: How many sides each die has. Must be at least 1. Default 
+        quantity (int): How many dice to roll. Must be at least 1. Default
+            1.
+        sides (int): How many sides each die has. Must be at least 1. Default 
             0, because we want the attr order to match dice string syntax
             but also want require the caller to provide a number of sides.
-        keep: How many of the highest rolls to keep. Must be between 1 and
-            quantity, inclusive. Default None (a sentinel meaning to keep
-            all rolled dice).
-        multiplier: An amount multiplied by the total. Default 1.
-        summand: An amount added to the total. Default 0. Note: between
+        keep (int | None): How many of the highest rolls to keep. Must be
+            between 1 and quantity, inclusive. Default None (a sentinel
+            meaning to keep all rolled dice).
+        multiplier (int): An amount multiplied by the total. Default 1.
+        summand (int): An amount added to the total. Default 0. Note: between
             summand and multipler, multiplication occurs before addition.
-        per_level: Indicate whether the amount of dice to roll scales
+        per_level (bool): Indicate whether the amount of dice to roll scales
             multiplicatively with the character's level. Default False.
     """
 

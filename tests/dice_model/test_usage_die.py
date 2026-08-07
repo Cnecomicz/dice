@@ -1,6 +1,6 @@
 from pytest import raises
 
-from dice_model.usage_die import UsageDie
+from dice_model.usage_die import UsageDie, UsageResult
 
 # UsageDie can be created
 def test_usagedie_creation():
