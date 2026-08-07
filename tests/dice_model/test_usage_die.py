@@ -24,5 +24,27 @@ def test_usagedie_use():
     assert not result.exhausted
     assert die.position == 0 if result.sides_after == 6 else die.position == 1
 
+# A roll of 1/2 downgrades a UsageDie
+def test_usagedie_downgrade():
+    die = UsageDie(6, 4)
+    result_1 = die.use(rng=mock_rng(1))
+    assert result_1.face == 1
+    assert result_1.sides_before == 6
+    assert result_1.sides_after == 4
+    assert result_1.downgraded
+    assert not result_1.exhausted
+    assert die.position == 1
+    result_2 = die.use(rng=mock_rng(2))
+    assert result_2.face == 2
+    assert result_2.sides_before == 4
+    assert result_2.sides_after is None
+    assert result_2.downgraded
+    assert result_2.exhausted
 
+# An exhausted UsageDie cannot be rolled
+def test_usagedie_exhausted():
+    die = UsageDie(4)
+    result = die.use(rng=mock_rng(1))
+    with raises(ValueError):
+        die.use()
 
