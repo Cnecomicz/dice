@@ -48,7 +48,7 @@ def roll(dice: Dice, level: int = 1, rng: Rng | None = None) -> RollResult:
         rng (Rng): The randomness source. Defaults to default_rng().
 
     Returns:
-        int: The resulting roll.
+        RollResult: A class recording the dice, faces, kept faces, and total.
     """
     rng = rng if rng is not None else default_rng()
     quantity = dice.quantity * (level if dice.per_level else 1)

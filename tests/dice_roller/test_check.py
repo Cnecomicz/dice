@@ -8,16 +8,16 @@ def test_thread_the_needle(mock_rng):
         assert result.lower_bound == 5
         assert result.upper_bound == 15
         assert result.advantage == 0
-        assert result.success if i in {5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15} else not result.success
+        assert result.success if i in {6, 7, 8, 9, 10, 11, 12, 13, 14} else not result.success
     for j in range(-2, 3):
         all_rolls = [8, 10, 12]
-        attempt = rolls[:abs(j)+1]
-        result = thread_the_needle(above=9, below=11, rng=mock_rng(attempt))
+        attempt = all_rolls[:abs(j)+1]
+        result = thread_the_needle(above=8, below=12, advantage=j, rng=mock_rng(*attempt))
         assert result.advantage == j
         assert (
             result.success 
-            if j >= 0 and any(attempt in {9, 10, 11})
-            or j <0 and all(attempt in {9, 10, 11})
+            if j >= 0 and any(roll in {9, 10, 11} for roll in attempt)
+            or j <0 and all(roll in {9, 10, 11} for roll in attempt)
             else not result.success
         )
 
