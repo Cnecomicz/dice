@@ -28,6 +28,9 @@ class CheckResult:
     advantage: int
     success: bool
 
+    def __bool__(self) -> bool:
+        return self.success
+
 def check_above(
     above: int, 
     advantage: int = 0, 
