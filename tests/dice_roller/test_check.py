@@ -25,11 +25,11 @@ def test_thread_the_needle(mock_rng):
 # You can check above or below, optionally with tie_succeeds
 def test_check_above_and_check_below(mock_rng):
     for roll in range(1, 21):
-        result_above = check_above(10)
-        result_above_tie = check_above(10, tie_succeeds=True)
-        result_below = check_below(10)
-        result_below_tie = check_below(10, tie_succeeds=True)
-        assert result_above.success if roll in {11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
-        assert result_above_tie.success if roll in {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
-        assert result_below.success if roll in {1, 2, 3, 4, 5, 6, 7, 8, 9}
-        assert result_below_tie.success if roll in {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+        result_above = check_above(10, rng=mock_rng(roll))
+        result_above_tie = check_above(10, tie_succeeds=True, rng=mock_rng(roll))
+        result_below = check_below(10, rng=mock_rng(roll))
+        result_below_tie = check_below(10, tie_succeeds=True, rng=mock_rng(roll))
+        assert result_above.success if roll in {11, 12, 13, 14, 15, 16, 17, 18, 19, 20} else not result_above.success
+        assert result_above_tie.success if roll in {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20} else not result_above_tie.success
+        assert result_below.success if roll in {1, 2, 3, 4, 5, 6, 7, 8, 9} else not result_below.success
+        assert result_below_tie.success if roll in {1, 2, 3, 4, 5, 6, 7, 8, 9, 10} else not result_below_tie.success

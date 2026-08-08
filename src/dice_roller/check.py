@@ -28,6 +28,58 @@ class CheckResult:
     advantage: int
     success: bool
 
+def check_above(
+    above: int, 
+    advantage: int = 0, 
+    tie_succeeds: bool = False, 
+    rng: Rng | None = None
+) -> CheckResult:
+    """Syntactic sugar for thread_the_needle(above, 21), modulo tie_succeeds.
+
+    Args:
+        above (int): The lower bound for success.
+        advantage (int): The signed advantage. Default 0. A 0 rolls once
+            and represents no advantage or disadvantage. A positive value,
+            a, rolls a+1 dice, succeeds when any of them succeed, and
+            represents advantage. A negative value, d, rolls -d+1 dice,
+            succeeds when all of them succeed, and represents disadvantage.
+        tie_succeeds (bool): Whether the lower bound "above" counts as success.
+        rng (Rng): The randomness source. Defaults to default_rng().
+
+    Returns:
+        CheckResult: A class describing the attempt.
+    """
+    lower_bound = above - 1 if tie_succeeds else above
+    return thread_the_needle(
+        above=lower_bound, below=21, advantage=advantage, rng=rng
+    )
+
+def check_below(
+    below: int, 
+    advantage: int = 0, 
+    tie_succeeds: bool = False, 
+    rng: Rng | None = None
+) -> CheckResult:
+    """Syntactic sugar for thread_the_needle(0, below), modulo tie_succeeds.
+
+    Args:
+        below (int): The upper bound for success.
+        advantage (int): The signed advantage. Default 0. A 0 rolls once
+            and represents no advantage or disadvantage. A positive value,
+            a, rolls a+1 dice, succeeds when any of them succeed, and
+            represents advantage. A negative value, d, rolls -d+1 dice,
+            succeeds when all of them succeed, and represents disadvantage.
+        tie_succeeds (bool): Whether the upper bound "below" counts as success.
+        rng (Rng): The randomness source. Defaults to default_rng().
+
+    Returns:
+        CheckResult: A class describing the attempt.
+    """
+    upper_bound = below + 1 if tie_succeeds else below
+    return thread_the_needle(
+        above=0, below=upper_bound, advantage=advantage, rng=rng
+    )
+
 def thread_the_needle(
     above: int, below: int, advantage: int = 0, rng: Rng | None = None
 ) -> CheckResult:
