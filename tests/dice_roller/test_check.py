@@ -33,3 +33,9 @@ def test_check_above_and_check_below(mock_rng):
         assert result_above_tie.success if roll in {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20} else not result_above_tie.success
         assert result_below.success if roll in {1, 2, 3, 4, 5, 6, 7, 8, 9} else not result_below.success
         assert result_below_tie.success if roll in {1, 2, 3, 4, 5, 6, 7, 8, 9, 10} else not result_below_tie.success
+
+# Checks are truthy
+def test_truthiness_of_checks_and_ttn(mock_rng):
+    assert check_above(above=5, rng=mock_rng(6))
+    assert not check_below(below=10, rng=mock_rng(15))
+    assert thread_the_needle(above=4, below=6, advantage=1, rng=mock_rng(10, 5))
