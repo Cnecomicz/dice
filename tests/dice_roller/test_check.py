@@ -1,4 +1,4 @@
-from dice_roller.check import thread_the_needle
+from dice_roller.check import check_above, check_below, thread_the_needle
 
 # You can thread the needle
 def test_thread_the_needle(mock_rng):
@@ -22,3 +22,14 @@ def test_thread_the_needle(mock_rng):
         assert disadvantage_result.advantage == disadvantage
         assert disadvantage_result.success if disadvantage in {-1, 0} else not disadvantage_result.success
 
+# You can check above or below, optionally with tie_succeeds
+def test_check_above_and_check_below(mock_rng):
+    for roll in range(1, 21):
+        result_above = check_above(10)
+        result_above_tie = check_above(10, tie_succeeds=True)
+        result_below = check_below(10)
+        result_below_tie = check_below(10, tie_succeeds=True)
+        assert result_above.success if roll in {11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
+        assert result_above_tie.success if roll in {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
+        assert result_below.success if roll in {1, 2, 3, 4, 5, 6, 7, 8, 9}
+        assert result_below_tie.success if roll in {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
