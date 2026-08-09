@@ -1,6 +1,5 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from re import compile, IGNORECASE, VERBOSE
 
 from dice_model.dice import Dice
 from dice_roller.rng import Rng
@@ -126,55 +125,3 @@ class UsageResult:
     sides_after: int | None
     downgraded: bool
     exhausted: bool
-
-def parse(dice_syntax: str) -> UsageDie:
-    """Build a UsageDie from its string notation.
-
-    Supported formats:
-    - "uS": Non-Zocchi UsageDie with S sides. 
-        Example: "u6" ↦ UsageDie(6, 4)
-    - "zS": Zocchi UsageDie with S sides. 
-        Example: "z6" ↦ UsageDie(6, 5, 4)
-    - "uSpP": Non-Zocchi UsageDie with S sides and P prestige.
-        Example: "u6p1" ↦ UsageDie(6, 4, 20, 12, 10, 8, 6, 4)
-    - "zSpP": Zocchi UsageDie with S sides and P prestige.
-        Example: "z6p1" ↦ UsageDie(6, 5, 4, 20, 16, 14, 12, 10, 8, 7, 6, 5, 4)
-
-    Args:
-        dice_syntax (str): A valid dice syntax string.
-
-    Returns:
-        UsageDie: The described UsageDie object.
-
-    Raises:
-        ValueError: If dice_syntax is not valid dice syntax.
-    """
-    notation = compile(
-        r"""
-        ^
-        (?P<zocchi>[uz])
-        (?P<sides>\d+)
-        (?:p(?P<prestige>\d+))?
-        $
-        """,
-        IGNORECASE | VERBOSE
-    )
-    match = notation.fullmatch(dice_syntax)
-    if match is None:
-        raise ValueError(f"Invalid dice syntax: {dice_syntax!r}.")
-    attrs = match.groupdict()
-    ladder = (
-        ZOCCHI_LADDER if attrs["zocchi"].lower() == "z" else REGULAR_LADDER
-    )
-    sides = int(attrs["sides"])
-    if sides not in ladder:
-        raise ValueError(
-            f"A {'Zocchi' if ladder is ZOCCHI_LADDER else 'regular'} usage "
-            "die must start on one of "
-            f"{', '.join(str(side) for side in ladder)}, but {sides} was "
-            "provided instead."
-        )
-    prestige = int(attrs["prestige"]) if attrs["prestige"] else 0
-    start = ladder.index(sides)
-    chain = ladder[start:] + ladder*prestige
-    return UsageDie(*chain)

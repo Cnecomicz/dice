@@ -41,4 +41,5 @@ Issues = "https://github.com/Cnecomicz/dice/issues"
 [tool.hatch.build.targets.wheel]
 packages = [
   "src/dice_model",
+  "src/dice_roller",
 ]

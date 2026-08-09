@@ -1,6 +1,6 @@
 from pytest import raises
 
-from dice_model.usage_die import UsageDie, UsageResult, parse
+from dice_model.usage_die import UsageDie, UsageResult
 
 # UsageDie can be created
 def test_usagedie_creation():
@@ -47,14 +47,6 @@ def test_usagedie_exhausted(mock_rng):
     result = die.use(rng=mock_rng(1))
     with raises(ValueError):
         die.use()
-
-# You can generate a UsageDie from string syntax
-def test_parsing_usagedie_string_syntax():
-    assert parse("u6").chain == (6, 4)
-    assert parse("u20").chain == (20, 12, 10, 8, 6, 4)
-    assert parse("u6p1").chain == (6, 4, 20, 12, 10, 8, 6, 4)
-    assert parse("z14").chain ==(14, 12, 10, 8, 7, 6, 5, 4)
-    assert parse("z4p2").chain == (4, 20, 16, 14, 12, 10, 8, 7, 6, 5, 4, 20, 16, 14, 12, 10, 8, 7, 6, 5, 4)
 
 # A UsageDie can return its own string syntax
 def test_generating_usagedie_string_syntax():

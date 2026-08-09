@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from dice_model.dice import Dice
-from dice_roller.rng import default_rng, Rng
+from dice_roller.rng import Rng, default_rng
 
 @dataclass(frozen=True)
 class RollResult:
@@ -58,6 +58,4 @@ def roll(dice: Dice, level: int = 1, rng: Rng | None = None) -> RollResult:
     else:
         kept = tuple(sorted(all_rolls, reverse=True)[: dice.keep])
     total = sum(kept) * dice.multiplier + dice.summand
-    return RollResult(
-        dice=dice, faces=all_rolls, kept=kept, total=total
-    )
+    return RollResult(dice=dice, faces=all_rolls, kept=kept, total=total)
