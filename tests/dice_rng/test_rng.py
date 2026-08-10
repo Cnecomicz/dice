@@ -1,4 +1,4 @@
-from dice_roller.rng import DefaultRng, Rng
+from dice_rng.rng import DefaultRng, Rng
 
 # The seam is well-defined
 def test_default_rng_is_an_rng_and_anything_with_randint_is_an_rng():

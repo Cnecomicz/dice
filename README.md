@@ -87,7 +87,7 @@ specific use cases that occur in my *Gold & Gallows* TTRPG, but in general
 need not be restricted to only this ruleset, unless specifically are called
 out as such.
 
-#### Defining some sets of dice and usage dice
+#### Defining sets of dice and usage dice
 
 Dice can be defined directly via the class `Dice` or by inputting dice string
 syntax into the `parse` function. Dice syntax must conform to the following
@@ -135,11 +135,11 @@ cure_serious_wounds = parse("2d8+1")
 ```
 
 Usage dice can also be defined directly or via `parse`. Defining a `UsageDie`
-directly only requires you to input the ordered sequence of dice that comprise
-the downgrade ladder. There are no restrictions on the dice sequence you
-define. Defining one via `parse` restricts you from the space of all possible
-`UsageDie`s to a subset that are defined in the *Gold & Gallows* ruleset.
-The syntax for parsing usage dice is:
+directly only requires you to input the ordered sequence of dice sides that
+comprise the downgrade ladder. There are no restrictions on the dice sequence
+you define. Defining one via `parse` restricts you from the space of all
+possible `UsageDie`s to a subset that are defined in the *Gold & Gallows*
+ruleset. The syntax for parsing usage dice is:
 
 ```
 [u|z] sides [p prestige]
@@ -230,7 +230,8 @@ method.
 
 ```python
 from dice_model import parse
-from dice_roller import roll, DefaultRng
+from dice_rng import DefaultRng
+from dice_roller import roll
 
 dagger = parse("d4")
 
@@ -245,17 +246,15 @@ roll_result = roll(dagger, rng=YourCustomRng())
 
 `level` is another optional parameter to `roll()`. It must be provided if
 the `Dice` object has `per_level=True` and is ignored if `per_level=False`.
-Also note that the output of roll automagically understands the int contex
-in order to subtract its total from `hp`.
 
 ```python
 from dice_model import parse
-from dice_roller import roll_result
+from dice_roller import roll
 
 elemental_blast = parse("l*d6")
 hp = 20
 
-hp -= roll(elemental_blast, level=4) # Rolls 4d6 and subtracts the result.
+hp -= int(roll(elemental_blast, level=4)) # Rolls 4d6 and subtracts the total.
 ```
 
 #### Rolling checks and saves
@@ -329,7 +328,8 @@ check_above(17, tie_succeeds=True)  # Success on a 17, 18, 19, or 20.
 an optional rng parameter which is passed into the call to `roll()` inside.
 
 ```python
-from dice_roller import thread_the_needle, check_below, DefaultRng
+from dice_rng import DefaultRng
+from dice_roller import thread_the_needle, check_below
 
 thread_the_needle(above=1, below=10, rng=DefaultRng(1729))
 
@@ -353,11 +353,16 @@ use `COVERAGE=1 ./run_tests.sh`.
 `Dice`, `UsageDie`, and `UsageResult` classes. Codecs for parsing string
 syntax into dice or usage dice.
 
+### dice_rng
+
+The `Rng` protocol seam with a canonical `DefaultRng` implementation and
+a shared `default_rng()` accessor.
+
 ### dice_roller
 
 Generic `roll` method and Gold & Gallows-specific `thread_the_needle`,
 `check_above`, and `check_below` methods. Returns `RollResult` and
-`CheckResult` classes. Also an `Rng` class seam with `DefaultRng` provided.
+`CheckResult` classes.
 
 ## Console scripts
 

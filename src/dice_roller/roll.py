@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from dice_model.dice import Dice
-from dice_roller.rng import Rng, default_rng
+from dice_rng.rng import Rng, default_rng
 
 @dataclass(frozen=True)
 class RollResult:

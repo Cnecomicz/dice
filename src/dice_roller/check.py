@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from dice_model.dice import Dice
-from dice_roller.rng import Rng
+from dice_rng.rng import Rng
 from dice_roller.roll import roll
 
 D20 = Dice(sides=20)

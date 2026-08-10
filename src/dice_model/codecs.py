@@ -44,10 +44,11 @@ def parse(dice_syntax: str) -> Dice | UsageDie:
     Raises:
         ValueError: If dice_syntax is not valid dice syntax.
     """
-    try:
+    if DICE_NOTATION.fullmatch(dice_syntax):
         return parse_dice(dice_syntax)
-    except ValueError:
+    if USAGEDIE_NOTATION.fullmatch(dice_syntax):
         return parse_usagedie(dice_syntax)
+    raise ValueError(f"Invalid dice syntax: {dice_syntax!r}.")
 
 def parse_dice(dice_syntax: str) -> Dice:
     """Build a Dice from its string notation.

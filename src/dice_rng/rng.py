@@ -3,7 +3,7 @@ from typing import Protocol, runtime_checkable
 
 @runtime_checkable
 class Rng(Protocol):
-    """The seam roll depends on to obtain randombness.
+    """The seam roll depends on to obtain randomness.
 
     Any object exposing a randint() method can be supplied whenever Rng
     is required. This allows for seeding, testing/debugging and
@@ -27,7 +27,7 @@ class DefaultRng:
 
     Attributes:
         seed (int | None): An optional seed. When left None, the sequence
-        of rolls is nondeterministic.
+            of rolls is nondeterministic.
     """
 
     def __init__(self, seed: int | None = None) -> None:
@@ -48,12 +48,12 @@ class DefaultRng:
 
 singleton = DefaultRng()
 
-def default_rng() -> Rng:
+def default_rng() -> DefaultRng:
     """Return the shared process-wide Rng.
 
-    This is the source used by roll() when the caller does not supply an
-    rng. It is unseeded and nondeterministic. For reproducible or isolated
-    randomness, pass your own Rng explicitly instead of relying on this
-    shared instance.
+    This is the source used by roll() and UsageDie.use() when the caller
+    does not supply an Rng. It is unseeded and nondeterministic. For
+    reproducible or isolated randomness, pass your own Rng explicitly instead
+    of relying on this shared instance.
     """
     return singleton

@@ -1,9 +1,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 
-from dice_model.dice import Dice
-from dice_roller.rng import Rng
-from dice_roller.roll import roll
+from dice_rng.rng import Rng, default_rng
 
 DOWNGRADE_ON = {1, 2}
 REGULAR_LADDER = (20, 12, 10, 8, 6, 4)
@@ -91,8 +89,9 @@ class UsageDie:
         """
         if self.exhausted:
             raise ValueError("Cannot use an exhausted usage die.")
+        rng = rng if rng is not None else default_rng()
         sides_before = self.chain[self.position]
-        face = roll(dice=Dice(sides=sides_before), rng=rng).face
+        face = rng.randint(1, sides_before)
         downgraded = face in DOWNGRADE_ON
         if downgraded:
             self.position += 1
