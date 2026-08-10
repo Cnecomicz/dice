@@ -39,7 +39,9 @@ class RollResult:
             )
         return self.faces[0]
 
-def roll(dice: Dice, level: int = 1, rng: Rng | None = None) -> RollResult:
+def roll(
+    dice: Dice, *, level: int | None = None, rng: Rng | None = None
+) -> RollResult:
     """Roll the set of dice and return the result.
 
     Args:
@@ -49,7 +51,19 @@ def roll(dice: Dice, level: int = 1, rng: Rng | None = None) -> RollResult:
 
     Returns:
         RollResult: A class recording the dice, faces, kept faces, and total.
+
+    Raises:
+        ValueError: If dice.per_level is True and no level is provided, or
+            if level is less than 1.
     """
+    if level is not None and level < 1:
+        raise ValueError(
+            f"Level is {level} but must be at least 1."
+        )
+    if dice.per_level and level is None:
+        raise ValueError(
+            "A level must be provided when dice.per_level is True."
+        )
     rng = rng if rng is not None else default_rng()
     quantity = dice.quantity * (level if dice.per_level else 1)
     all_rolls = tuple(rng.randint(1, dice.sides) for die in range(quantity))

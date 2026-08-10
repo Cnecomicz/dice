@@ -66,7 +66,7 @@ def parse_dice(dice_syntax: str) -> Dice:
     - "l*dS": Dice with S sides and True per_level.
         Example: "l*d6" ↦ Dice(sides=6, per_level=True)
     All syntax can be used at once:
-        ""l*2d6k1*3+2" ↦ Dice(
+        "l*2d6k1*3+2" ↦ Dice(
             quantity=2, sides=6, keep=1, 
             multiplier=3, summand=2, per_level=True
         )

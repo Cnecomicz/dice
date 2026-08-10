@@ -33,6 +33,7 @@ class CheckResult:
 
 def check_above(
     above: int, 
+    *,
     advantage: int = 0, 
     tie_succeeds: bool = False, 
     rng: Rng | None = None
@@ -59,6 +60,7 @@ def check_above(
 
 def check_below(
     below: int, 
+    *,
     advantage: int = 0, 
     tie_succeeds: bool = False, 
     rng: Rng | None = None
@@ -84,7 +86,7 @@ def check_below(
     )
 
 def thread_the_needle(
-    above: int, below: int, advantage: int = 0, rng: Rng | None = None
+    above: int, below: int, *, advantage: int = 0, rng: Rng | None = None
 ) -> CheckResult:
     """Roll a d20 and succeed when it lands strictly between two bounds.
 
