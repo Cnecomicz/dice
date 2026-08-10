@@ -11,7 +11,7 @@ class CheckResult:
     """The outcome of a check attempt.
 
     Attributes:
-        rolls (tuple[int]): Every d20 rolled for the check.
+        rolls (tuple[int, ...]): Every d20 rolled for the check.
         lower_bound (int): The lower bound; success requires a roll strictly
             above it.
         upper_bound (int): The upper bound; success requires a roll strictly
@@ -100,7 +100,7 @@ def thread_the_needle(
             a, rolls a+1 dice, succeeds when any of them succeed, and
             represents advantage. A negative value, d, rolls -d+1 dice,
             succeeds when all of them succeed, and represents disadvantage.
-        rng (Rng): : The randomness source. Defaults to default_rng().
+        rng (Rng): The randomness source. Defaults to default_rng().
 
     Returns:
         CheckResult: A class describing the attempt.

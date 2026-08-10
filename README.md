@@ -257,7 +257,7 @@ hp = 20
 hp -= int(roll(elemental_blast, level=4)) # Rolls 4d6 and subtracts the total.
 ```
 
-#### Rolling checks and saves
+#### Rolling checks
 
 While in general rolling is not ruleset-specific, checks in this project
 for the most part are tied to my TTRPG. In *Gold & Gallows*, checks are
