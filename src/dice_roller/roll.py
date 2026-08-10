@@ -46,24 +46,24 @@ def roll(
 
     Args:
         dice (Dice): The description of what to roll.
-        level (int): The character level, relevant if dice.per_level == True.
+        level (int | None): The character level, relevant only if
+            dice.per_level == True. Default None.
         rng (Rng): The randomness source. Defaults to default_rng().
 
     Returns:
         RollResult: A class recording the dice, faces, kept faces, and total.
 
     Raises:
-        ValueError: If dice.per_level is True and no level is provided, or
-            if level is less than 1.
+        ValueError: If dice.per_level is True and no level is provided or
+            level is less than 1.
     """
-    if level is not None and level < 1:
-        raise ValueError(
-            f"Level is {level} but must be at least 1."
-        )
-    if dice.per_level and level is None:
-        raise ValueError(
-            "A level must be provided when dice.per_level is True."
-        )
+    if dice.per_level:
+        if level is None:
+            raise ValueError(
+                "A level must be provided when dice.per_level is True."
+            )
+        if level is not None and level < 1:
+            raise ValueError(f"Level is {level} but must be at least 1.")
     rng = rng if rng is not None else default_rng()
     quantity = dice.quantity * (level if dice.per_level else 1)
     all_rolls = tuple(rng.randint(1, dice.sides) for die in range(quantity))

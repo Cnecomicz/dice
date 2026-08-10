@@ -9,7 +9,7 @@ class Dice:
             1.
         sides (int): How many sides each die has. Must be at least 1. Default 
             0, because we want the attr order to match dice string syntax
-            but also want require the caller to provide a number of sides.
+            but also want to require the caller to provide a number of sides.
         keep (int | None): How many of the highest rolls to keep. Must be
             between 1 and quantity, inclusive. Default None (a sentinel
             meaning to keep all rolled dice).

@@ -26,6 +26,11 @@ class UsageDie:
         self.chain = chain
         self.position = 0
 
+    def __repr__(self) -> str:
+        chain = ", ".join(str(sides) for sides in self.chain)
+        position = f"@{self.position}" if self.position > 0 else ""
+        return f"UsageDie({chain}){position}"
+
     @property
     def current_sides(self) -> int | None:
         """The number of sides of the current die, or None if exhausted."""

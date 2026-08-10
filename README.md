@@ -363,8 +363,3 @@ a shared `default_rng()` accessor.
 Generic `roll` method and Gold & Gallows-specific `thread_the_needle`,
 `check_above`, and `check_below` methods. Returns `RollResult` and
 `CheckResult` classes.
-
-## Console scripts
-
-(With dev dependencies) `./run_tests.sh` runs an optimized pytest suite.
-To force all tests to run, use `COVERAGE=1 ./run_tests.sh`.

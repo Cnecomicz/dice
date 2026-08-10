@@ -106,7 +106,7 @@ def thread_the_needle(
         CheckResult: A class describing the attempt.
     """
     attempts = abs(advantage) + 1
-    rolls = tuple(roll(dice=D20, rng=rng).face for i in range(attempts))
+    rolls = tuple(roll(dice=D20, rng=rng).face for die in range(attempts))
     individual_successes = [above < face < below for face in rolls]
     success = (
         any(individual_successes) 
