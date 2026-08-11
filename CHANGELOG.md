@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-08-11
+### Added
+- Include `py.typed` markers in all typed packages.
+- Minor tweaks to `README.md`.
+
 ## [1.0.0] - 2026-08-10
 ### Added
 - Initial public release.

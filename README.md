@@ -49,10 +49,10 @@ This project requires Python 3.11 or newer.
 ### Install a released version
 
 To install a specific published release, install it directly from its tag.
-For example, to install v1.0.0:
+For example, to install v1.0.1:
 
 ```bash
-pip install "git+https://github.com/Cnecomicz/dice.git@v1.0.0"
+pip install "git+https://github.com/Cnecomicz/dice.git@v1.0.1"
 ```
 
 Releases are listed at
@@ -331,7 +331,7 @@ an optional rng parameter which is passed into the call to `roll()` inside.
 from dice_rng import DefaultRng
 from dice_roller import thread_the_needle, check_below
 
-thread_the_needle(above=1, below=10, rng=DefaultRng(1729))
+thread_the_needle(above=1, below=12, rng=DefaultRng(1729))
 
 class YourCustomRng:
     def randint(self, low, high):
